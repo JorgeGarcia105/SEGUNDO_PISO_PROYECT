@@ -5,6 +5,7 @@ import { Modal, Button, Input, Select, Textarea, FormField } from '@components/u
 import { normVersionSchema, type NormVersionForm } from '@utils/validation'
 import { useDocuments } from '@hooks/useDocuments'
 import { useNorms } from '@hooks/useNorms'
+import { useAllProfiles } from '@hooks/useProfiles'
 import { type InitialVersionData } from './types'
 
 type FormNormVersion = NormVersionForm & { status: NormVersionForm['status'] }
@@ -28,6 +29,7 @@ export function NormVersionFormModal({
 }: NormVersionFormModalProps) {
   const { documents } = useDocuments()
   const { norms } = useNorms()
+  const { profiles } = useAllProfiles()
 
   const {
     register,
@@ -39,6 +41,7 @@ export function NormVersionFormModal({
     defaultValues: {
       norm_id: normId || '',
       version_number: 1,
+      version_label: '',
       text_content: '',
       status: 'PENDIENTE_CONFIRMACION',
       valid_from: undefined,
@@ -46,6 +49,8 @@ export function NormVersionFormModal({
       source_document_id: undefined,
       source_note: '',
       approval_note: '',
+      ratification_date: undefined,
+      ratified_by: undefined,
     },
   })
 
@@ -55,6 +60,7 @@ export function NormVersionFormModal({
         reset({
           norm_id: initialData.norm_id,
           version_number: initialData.version_number,
+          version_label: initialData.version_label || '',
           text_content: initialData.text_content,
           status: initialData.status,
           valid_from: initialData.valid_from ?? undefined,
@@ -62,6 +68,8 @@ export function NormVersionFormModal({
           source_document_id: initialData.source_document_id ?? undefined,
           source_note: initialData.source_note || '',
           approval_note: initialData.approval_note || '',
+          ratification_date: initialData.ratification_date ?? undefined,
+          ratified_by: initialData.ratified_by ?? undefined,
         })
       } else {
         const nextVersion = norms
@@ -70,6 +78,7 @@ export function NormVersionFormModal({
         reset({
           norm_id: normId || '',
           version_number: (nextVersion || 0) + 1,
+          version_label: '',
           text_content: '',
           status: 'PENDIENTE_CONFIRMACION',
           valid_from: undefined,
@@ -77,6 +86,8 @@ export function NormVersionFormModal({
           source_document_id: undefined,
           source_note: '',
           approval_note: '',
+          ratification_date: undefined,
+          ratified_by: undefined,
         })
       }
     }
@@ -111,6 +122,14 @@ export function NormVersionFormModal({
             type="number"
             min="1"
             placeholder="1"
+          />
+        </FormField>
+
+        <FormField label="Etiqueta de versión" error={errors.version_label?.message}>
+          <Input
+            {...register('version_label')}
+            placeholder="Ej: v1.0, 2026-01, etc."
+            maxLength={50}
           />
         </FormField>
 
@@ -152,6 +171,27 @@ export function NormVersionFormModal({
               {...register('valid_until')}
               type="date"
               placeholder="YYYY-MM-DD"
+            />
+          </FormField>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <FormField label="Fecha de ratificación" error={errors.ratification_date?.message}>
+            <Input
+              {...register('ratification_date')}
+              type="date"
+              placeholder="YYYY-MM-DD"
+            />
+          </FormField>
+
+          <FormField label="Ratificado por" error={errors.ratified_by?.message}>
+            <Select
+              {...register('ratified_by')}
+              options={[
+                { value: '', label: 'Sin ratificar' },
+                ...profiles.map((p: any) => ({ value: p.id, label: p.display_name || p.room_label || p.id })),
+              ]}
+              placeholder="Seleccionar persona"
             />
           </FormField>
         </div>

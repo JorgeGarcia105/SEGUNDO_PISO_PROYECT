@@ -63,11 +63,16 @@ export const normCategorySchema = z.object({
 export const normSchema = z.object({
   category_id: uuidSchema.optional().nullable(),
   title: requiredString('Título'),
+  article_number: z.string().optional().nullable(),
+  chapter: z.string().optional().nullable(),
+  is_provisional: z.boolean().optional().default(false),
+  drive_url: z.string().optional().nullable(),
 })
 
 export const normVersionSchema = z.object({
   norm_id: uuidSchema,
   version_number: positiveIntSchema('Número de versión'),
+  version_label: z.string().optional().nullable(),
   text_content: requiredString('Contenido'),
   status: normStatusSchema,
   valid_from: dateSchema.optional().nullable(),
@@ -75,6 +80,8 @@ export const normVersionSchema = z.object({
   source_document_id: uuidSchema.optional().nullable(),
   source_note: optionalString(),
   approval_note: optionalString(),
+  ratification_date: dateSchema.optional().nullable(),
+  ratified_by: uuidSchema.optional().nullable(),
 })
 
 export const assemblyMinuteSchema = z.object({

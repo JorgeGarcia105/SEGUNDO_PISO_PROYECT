@@ -43,6 +43,8 @@ export interface Document {
   description: string | null
   status: PublicationStatus
   is_immutable: boolean
+  drive_url: string | null
+  external_id: string | null
   created_by: string | null
   created_at: string
   updated_at: string
@@ -61,6 +63,10 @@ export interface Norm {
   id: string
   category_id: string | null
   title: string
+  article_number: string | null
+  chapter: string | null
+  is_provisional: boolean
+  drive_url: string | null
   created_by: string | null
   created_at: string
   updated_at: string
@@ -70,6 +76,7 @@ export interface NormVersion {
   id: string
   norm_id: string
   version_number: number
+  version_label: string | null
   text_content: string
   status: NormStatus
   valid_from: string | null
@@ -77,6 +84,8 @@ export interface NormVersion {
   source_document_id: string | null
   source_note: string | null
   approval_note: string | null
+  ratification_date: string | null
+  ratified_by: string | null
   created_by: string | null
   created_at: string
 }
@@ -142,6 +151,9 @@ export interface CleaningTask {
   title: string
   instructions: string | null
   frequency_note: string | null
+  products: string | null
+  verification_criteria: string | null
+  order_index: number | null
   source_document_id: string | null
   status: PublicationStatus
   created_by: string | null
@@ -263,6 +275,33 @@ export interface AuditEvent {
   changed_at: string
 }
 
+export interface NormAnnotation {
+  id: string
+  norm_id: string
+  version_id: string | null
+  annotation_type: 'concordancia' | 'referencia_cruzada' | 'nota_interna' | 'observacion' | 'vacío_detectado'
+  title: string
+  content: string
+  source_document_id: string | null
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface FormatControl {
+  id: string
+  format_number: number
+  title: string
+  description: string | null
+  article_reference: string | null
+  template_content: string | null
+  drive_url: string | null
+  status: PublicationStatus
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
 export interface Tables {
   profiles: Profile
   profile_roles: ProfileRole
@@ -270,6 +309,8 @@ export interface Tables {
   norm_categories: NormCategory
   norms: Norm
   norm_versions: NormVersion
+  norm_annotations: NormAnnotation
+  formats_control: FormatControl
   assembly_minutes: AssemblyMinute
   decisions: Decision
   norm_changes: NormChange
@@ -292,6 +333,8 @@ export interface TablesInsert {
   norm_categories: Omit<NormCategory, 'id' | 'created_at' | 'updated_at'>
   norms: Omit<Norm, 'id' | 'created_at' | 'updated_at'>
   norm_versions: Omit<NormVersion, 'id' | 'created_at'>
+  norm_annotations: Omit<NormAnnotation, 'id' | 'created_at' | 'updated_at'>
+  formats_control: Omit<FormatControl, 'id' | 'created_at' | 'updated_at'>
   assembly_minutes: Omit<AssemblyMinute, 'id' | 'created_at' | 'updated_at'>
   decisions: Omit<Decision, 'id' | 'created_at' | 'updated_at'>
   norm_changes: Omit<NormChange, 'id' | 'created_at'>
@@ -314,6 +357,8 @@ export interface TablesUpdate {
   norm_categories: Partial<Omit<NormCategory, 'id' | 'created_at'>>
   norms: Partial<Omit<Norm, 'id' | 'created_at'>>
   norm_versions: Partial<Omit<NormVersion, 'id' | 'created_at'>>
+  norm_annotations: Partial<Omit<NormAnnotation, 'id' | 'created_at'>>
+  formats_control: Partial<Omit<FormatControl, 'id' | 'created_at'>>
   assembly_minutes: Partial<Omit<AssemblyMinute, 'id' | 'created_at'>>
   decisions: Partial<Omit<Decision, 'id' | 'created_at'>>
   norm_changes: Partial<Omit<NormChange, 'id' | 'created_at'>>
@@ -329,6 +374,8 @@ export interface TablesUpdate {
   audit_events: Partial<Omit<AuditEvent, 'id' | 'changed_at'>>
 }
 
+export type AnnotationType = 'concordancia' | 'referencia_cruzada' | 'nota_interna' | 'observacion' | 'vacío_detectado'
+
 export interface Enums {
   app_role: AppRole
   publication_status: PublicationStatus
@@ -341,6 +388,7 @@ export interface Enums {
   measure_type: MeasureType
   measure_status: MeasureStatus
   case_event_type: CaseEventType
+  annotation_type: AnnotationType
 }
 
 export type CompositeTypes = {

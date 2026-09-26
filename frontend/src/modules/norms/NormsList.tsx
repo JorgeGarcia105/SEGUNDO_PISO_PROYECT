@@ -25,11 +25,11 @@ export function NormsList() {
   const [dateTo, setDateTo] = useState('')
 
   const [normFormOpen, setNormFormOpen] = useState(false)
-  const [editingNorm, setEditingNorm] = useState<{ id: string; category_id: string | null; title: string } | null>(null)
+  const [editingNorm, setEditingNorm] = useState<{ id: string; category_id: string | null; title: string; article_number: string | null; chapter: string | null; is_provisional: boolean; drive_url: string | null } | null>(null)
 
   const [versionFormOpen, setVersionFormOpen] = useState(false)
   const [versionNormId, setVersionNormId] = useState<string | null>(null)
-  const [editingVersion, setEditingVersion] = useState<InitialVersionData | null>(null)
+  const [editingVersion, setEditingVersion] = useState<InitialVersionData & { version_label?: string | null; ratification_date?: string | null; ratified_by?: string | null } | null>(null)
 
   const [categoryFormOpen, setCategoryFormOpen] = useState(false)
   const [editingCategory, setEditingCategory] = useState<{ id: string; name: string; description: string | null } | null>(null)
@@ -62,9 +62,17 @@ export function NormsList() {
 
   const hasActiveFilters = !!searchQuery || !!selectedCategory || !!selectedStatus || !!dateFrom || !!dateTo
 
-  const handleCreateNorm = useCallback(async (data: { category_id?: string | null; title: string }) => {
+  const handleCreateNorm = useCallback(async (data: { category_id?: string | null; title: string; article_number?: string | null; chapter?: string | null; is_provisional?: boolean; drive_url?: string | null }) => {
     try {
-      await createNorm({ category_id: data.category_id || null, title: data.title, created_by: profile?.id ?? null })
+      await createNorm({ 
+        category_id: data.category_id || null, 
+        title: data.title, 
+        article_number: data.article_number || null,
+        chapter: data.chapter || null,
+        is_provisional: data.is_provisional || false,
+        drive_url: data.drive_url || null,
+        created_by: profile?.id ?? null 
+      })
       toast.success('Norma creada correctamente')
       setNormFormOpen(false)
       refetch()
@@ -73,10 +81,17 @@ export function NormsList() {
     }
   }, [profile?.id, refetch])
 
-  const handleUpdateNorm = useCallback(async (data: { category_id?: string | null; title: string }) => {
+  const handleUpdateNorm = useCallback(async (data: { category_id?: string | null; title: string; article_number?: string | null; chapter?: string | null; is_provisional?: boolean; drive_url?: string | null }) => {
     if (!editingNorm) return
     try {
-      await updateNorm(editingNorm.id, { category_id: data.category_id || null, title: data.title })
+      await updateNorm(editingNorm.id, { 
+        category_id: data.category_id || null, 
+        title: data.title,
+        article_number: data.article_number || null,
+        chapter: data.chapter || null,
+        is_provisional: data.is_provisional || false,
+        drive_url: data.drive_url || null,
+      })
       toast.success('Norma actualizada correctamente')
       setNormFormOpen(false)
       setEditingNorm(null)
@@ -100,6 +115,7 @@ export function NormsList() {
   const handleCreateVersion = useCallback(async (data: {
     norm_id: string
     version_number: number
+    version_label?: string | null
     text_content: string
     status?: string
     valid_from?: string | null
@@ -107,11 +123,14 @@ export function NormsList() {
     source_document_id?: string | null
     source_note?: string | null
     approval_note?: string | null
+    ratification_date?: string | null
+    ratified_by?: string | null
   }) => {
     try {
       await createNormVersion({
         norm_id: data.norm_id,
         version_number: data.version_number,
+        version_label: data.version_label || null,
         text_content: data.text_content,
         status: (data.status as any) || 'PENDIENTE_CONFIRMACION',
         valid_from: data.valid_from || null,
@@ -119,6 +138,8 @@ export function NormsList() {
         source_document_id: data.source_document_id || null,
         source_note: data.source_note || null,
         approval_note: data.approval_note || null,
+        ratification_date: data.ratification_date || null,
+        ratified_by: data.ratified_by || null,
         created_by: profile?.id ?? null,
       })
       toast.success('Versión creada correctamente')
@@ -133,6 +154,7 @@ export function NormsList() {
   const handleUpdateVersion = useCallback(async (data: {
     norm_id: string
     version_number: number
+    version_label?: string | null
     text_content: string
     status?: string
     valid_from?: string | null
@@ -140,11 +162,14 @@ export function NormsList() {
     source_document_id?: string | null
     source_note?: string | null
     approval_note?: string | null
+    ratification_date?: string | null
+    ratified_by?: string | null
   }) => {
     if (!editingVersion) return
     try {
       await updateNormVersion(editingVersion.id, {
         version_number: data.version_number,
+        version_label: data.version_label || null,
         text_content: data.text_content,
         status: (data.status as any) || 'PENDIENTE_CONFIRMACION',
         valid_from: data.valid_from || null,
@@ -152,6 +177,8 @@ export function NormsList() {
         source_document_id: data.source_document_id || null,
         source_note: data.source_note || null,
         approval_note: data.approval_note || null,
+        ratification_date: data.ratification_date || null,
+        ratified_by: data.ratified_by || null,
       })
       toast.success('Versión actualizada correctamente')
       setVersionFormOpen(false)
@@ -186,7 +213,7 @@ export function NormsList() {
     }
   }, [editingCategory, refetch])
 
-  const handleOpenNormForm = useCallback((data?: { id: string; category_id: string | null; title: string }) => {
+  const handleOpenNormForm = useCallback((data?: { id: string; category_id: string | null; title: string; article_number: string | null; chapter: string | null; is_provisional: boolean; drive_url: string | null }) => {
     if (!normFormLoaded) setNormFormLoaded(true)
     if (data) setEditingNorm(data)
     else setEditingNorm(null)
@@ -256,7 +283,15 @@ export function NormsList() {
       norm,
       onEdit: () => {
         setDetailOpen(null)
-        handleOpenNormForm({ id: norm.id, category_id: norm.category_id, title: norm.title })
+        handleOpenNormForm({ 
+          id: norm.id, 
+          category_id: norm.category_id, 
+          title: norm.title,
+          article_number: norm.article_number,
+          chapter: norm.chapter,
+          is_provisional: norm.is_provisional,
+          drive_url: norm.drive_url,
+        })
       },
       onNewVersion: () => {
         setDetailOpen(null)
@@ -403,7 +438,15 @@ export function NormsList() {
             items.push({ divider: true })
             items.push({
               label: 'Editar norma',
-              onClick: () => handleOpenNormForm({ id: norm.id, category_id: norm.category_id, title: norm.title }),
+              onClick: () => handleOpenNormForm({ 
+                id: norm.id, 
+                category_id: norm.category_id, 
+                title: norm.title,
+                article_number: norm.article_number,
+                chapter: norm.chapter,
+                is_provisional: norm.is_provisional,
+                drive_url: norm.drive_url,
+              }),
               icon: <EditIcon />,
             })
             items.push({

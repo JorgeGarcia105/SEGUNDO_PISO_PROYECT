@@ -100,7 +100,7 @@ begin
         norm_id, version_number, text_content, status, source_document_id,
         source_note, approval_note
       ) values (
-        existing_norm_id, 1, item->>'text', item->>'status', carta_id,
+        existing_norm_id, 1, item->>'text', (item->>'status')::public.norm_status, carta_id,
         item->>'source_note', item->>'approval_note'
       );
     end if;

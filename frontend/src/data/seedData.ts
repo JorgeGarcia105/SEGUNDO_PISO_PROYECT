@@ -25,6 +25,8 @@ export const seedDocuments: Document[] = [
     description: 'Fuente normativa base del Segundo Piso. Requiere confirmación de vigencia institucional.',
     status: 'publicado',
     is_immutable: true,
+    drive_url: null,
+    external_id: null,
     created_by: null,
     created_at: '2023-01-15T08:00:00Z',
     updated_at: '2023-01-15T08:00:00Z',
@@ -39,6 +41,8 @@ export const seedDocuments: Document[] = [
     description: 'Compilación histórica de actas, propuestas, votaciones, decisiones e informes del Segundo Piso.',
     status: 'publicado',
     is_immutable: true,
+    drive_url: null,
+    external_id: null,
     created_by: null,
     created_at: '2026-08-20T10:00:00Z',
     updated_at: '2026-08-20T10:00:00Z',
@@ -112,6 +116,10 @@ export const seedNorms: Norm[] = rawNormData.map((n) => ({
   id: n.id,
   category_id: n.categoryId,
   title: n.title,
+  article_number: null,
+  chapter: null,
+  is_provisional: false,
+  drive_url: null,
   created_by: null,
   created_at: '2023-01-15T08:00:00Z',
   updated_at: '2023-01-15T08:00:00Z',
@@ -121,6 +129,7 @@ export const seedNormVersions: NormVersion[] = rawNormData.map((n) => ({
   id: `ver-${n.id}`,
   norm_id: n.id,
   version_number: 1,
+  version_label: null,
   text_content: n.text,
   status: n.status,
   valid_from: '2023-01-15',
@@ -128,6 +137,8 @@ export const seedNormVersions: NormVersion[] = rawNormData.map((n) => ({
   source_document_id: 'doc-carta-interna',
   source_note: n.sourceNote,
   approval_note: n.approvalNote,
+  ratification_date: null,
+  ratified_by: null,
   created_by: null,
   created_at: '2023-01-15T08:00:00Z',
 }))
@@ -144,11 +155,11 @@ export const seedCleaningZones: CleaningZone[] = [
 ]
 
 export const seedCleaningTasks: CleaningTask[] = [
-  { id: 'task-pasillo-1', zone_id: 'zone-pasillo-1', title: 'Aseo Pasillo 1 y Comedor', instructions: 'Barrer y trapear 2 veces pasillo 217-234, limpiar área de comedor, gabinete de incendios y ventana al coliseo.', frequency_note: 'Semanal (prelación B)', source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
-  { id: 'task-pasillo-2', zone_id: 'zone-pasillo-2', title: 'Aseo Pasillo 2 y Sala', instructions: 'Barrer y trapear 2 veces pasillo 201-216 y sala de estar, limpiar canecas y pasar trapo a sillones.', frequency_note: 'Semanal (prelación B)', source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
-  { id: 'task-duchas', zone_id: 'zone-duchas', title: 'Limpieza profunda de Duchas', instructions: 'Lavar con jabón, fab y límpido. Restregar pisos y paredes, secar puertas y dejar una ducha libre.', frequency_note: 'Lunes a domingo rotativo', source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
-  { id: 'task-banos', zone_id: 'zone-banos', title: 'Desinfección de Baños', instructions: 'Limpiar con cloro espejos, inodoros y orinales. Barrer y trapear 2 veces y reponer bolsas.', frequency_note: 'Diario (prelación A lunes)', source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
-  { id: 'task-cocina', zone_id: 'zone-cocina', title: 'Mantenimiento e higiene de Cocina', instructions: 'Limpiar quemadores, hornillas, microondas, bajo la nevera y mesa roja. No dejar utensilios ajenos.', frequency_note: 'Diario (prelación A lunes)', source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
+  { id: 'task-pasillo-1', zone_id: 'zone-pasillo-1', title: 'Aseo Pasillo 1 y Comedor', instructions: 'Barrer y trapear 2 veces pasillo 217-234, limpiar área de comedor, gabinete de incendios y ventana al coliseo.', frequency_note: 'Semanal (prelación B)', products: null, verification_criteria: null, order_index: 1, source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
+  { id: 'task-pasillo-2', zone_id: 'zone-pasillo-2', title: 'Aseo Pasillo 2 y Sala', instructions: 'Barrer y trapear 2 veces pasillo 201-216 y sala de estar, limpiar canecas y pasar trapo a sillones.', frequency_note: 'Semanal (prelación B)', products: null, verification_criteria: null, order_index: 2, source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
+  { id: 'task-duchas', zone_id: 'zone-duchas', title: 'Limpieza profunda de Duchas', instructions: 'Lavar con jabón, fab y límpido. Restregar pisos y paredes, secar puertas y dejar una ducha libre.', frequency_note: 'Lunes a domingo rotativo', products: 'jabón, fab, límpido', verification_criteria: 'Pisos y paredes restregados, puertas secas, una ducha libre', order_index: 3, source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
+  { id: 'task-banos', zone_id: 'zone-banos', title: 'Desinfección de Baños', instructions: 'Limpiar con cloro espejos, inodoros y orinales. Barrer y trapear 2 veces y reponer bolsas.', frequency_note: 'Diario (prelación A lunes)', products: 'cloro, jabón', verification_criteria: 'Espejos, inodoros, orinales limpios; piso barrido y trapeado 2 veces; bolsas repuestas', order_index: 4, source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
+  { id: 'task-cocina', zone_id: 'zone-cocina', title: 'Mantenimiento e higiene de Cocina', instructions: 'Limpiar quemadores, hornillas, microondas, bajo la nevera y mesa roja. No dejar utensilios ajenos.', frequency_note: 'Diario (prelación A lunes)', products: 'esponja, jabón, desengrasante', verification_criteria: 'Quemadores, hornillas, microondas, bajo nevera, mesa roja limpios; sin utensilios ajenos', order_index: 5, source_document_id: 'doc-carta-interna', status: 'publicado', created_by: null, created_at: '2023-01-15T08:00:00Z', updated_at: '2023-01-15T08:00:00Z' },
 ]
 
 export const seedAssemblyMinutes: AssemblyMinute[] = [

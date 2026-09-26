@@ -7,6 +7,7 @@ import { seedNorms, seedCleaningZones, seedAssemblyMinutes } from './data/seedDa
 import { ToastProvider } from './components/ui/Toast'
 import { ModuleLoader, ErrorBoundary } from './components/ui'
 import { AdminLayout } from './modules/admin'
+import { SignInPage } from './modules/auth'
 import './App.css'
 
 const NormsModule = lazy(() => import('./modules/norms/NormsList').then((m) => ({ default: m.NormsList })))
@@ -92,7 +93,7 @@ const moduleCopy: Record<ModuleKey, { eyebrow: string; title: string; descriptio
 }
 
 function AppContent() {
-  const { isLocalMode } = useAuth()
+  const { isLocalMode, user, profile, signOut } = useAuth()
   const [activeModule, setActiveModule] = useState<ModuleKey>('inicio')
   const [cleaningTab, setCleaningTab] = useState<CleaningTabKey>('assignments')
   const [menuOpen, setMenuOpen] = useState(false)
@@ -493,11 +494,37 @@ function AppContent() {
                 </select>
               </div>
             )}
+
+            {!isLocalMode && !user && (
+              <NavLink
+                to="/signin"
+                className="px-3 py-1.5 text-sm font-medium text-primary hover:text-primary/80 border border-primary/20 rounded-lg transition-colors"
+              >
+                Iniciar sesión
+              </NavLink>
+            )}
+
+            {!isLocalMode && user && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="text-sm text-gray-600">{profile?.display_name || user.email}</span>
+                <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
+                  {profile?.profile_roles?.[0]?.role || 'usuario'}
+                </span>
+                <button
+                  type="button"
+                  onClick={signOut}
+                  className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 border border-gray-200 rounded-lg transition-colors"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
           </div>
 </header>
 
 <div className="page-content">
             <Routes>
+              <Route path="/signin" element={<SignInPage />} />
               <Route path="/admin/*" element={<AdminLayout />}>
                 <Route index element={<Navigate to="/admin/incumplissements" replace />} />
                 <Route path="incumplissements" element={<AdminViolationsModule />} />
