@@ -8,6 +8,9 @@ import { ToastProvider } from './components/ui/Toast'
 import { ModuleLoader, ErrorBoundary } from './components/ui'
 import { AdminLayout } from './modules/admin'
 import { SignInPage } from './modules/auth'
+import { AdminGuard, AuthGuard } from './components/auth'
+import { ProfilePage } from './modules/profile'
+import { useTheme } from './design-system'
 import './App.css'
 
 const NormsModule = lazy(() => import('./modules/norms/NormsList').then((m) => ({ default: m.NormsList })))
@@ -94,22 +97,25 @@ const moduleCopy: Record<ModuleKey, { eyebrow: string; title: string; descriptio
 
 function AppContent() {
   const { isLocalMode, user, profile, signOut } = useAuth()
+  const { theme, toggleTheme } = useTheme()
   const [activeModule, setActiveModule] = useState<ModuleKey>('inicio')
   const [cleaningTab, setCleaningTab] = useState<CleaningTabKey>('assignments')
   const [menuOpen, setMenuOpen] = useState(false)
   const [resetMessage, setResetMessage] = useState('')
+  // Solo para modo local (mock): permite cambiar rol de prueba
+  const [localMockRole, setLocalMockRole] = useState<'usuario' | 'administrador' | 'superadministrador'>('usuario')
 
   const copy = moduleCopy[activeModule]
+
+  const isAdmin = profile?.profile_roles?.some((r) => r.role === 'administrador' || r.role === 'superadministrador')
+  const isSuperAdmin = profile?.profile_roles?.some((r) => r.role === 'superadministrador')
+  const currentRoleLabel = isSuperAdmin ? 'Superadmin' : isAdmin ? 'Administrador' : 'Residente'
 
   function handleResetSeed() {
     initializeLocalStores(true)
     setResetMessage('¡Datos locales restablecidos a la semilla documental!')
     setTimeout(() => setResetMessage(''), 3500)
   }
-
-  // Default to public/resident view - no login required for public content
-  // In local mode, switchMockRole can change this; in production, admin routes are protected by AdminLayout
-  const [currentRole, setCurrentRole] = useState<'usuario' | 'administrador' | 'superadministrador'>('usuario')
 
   // Main app content component for React Router
   const MainAppContent = () => (
@@ -123,13 +129,7 @@ function AppContent() {
         <div className="intro-note">
           <span className="note-kicker">Entorno</span>
           <strong>{isLocalMode ? 'Modo Local Autónomo' : 'Nube Supabase'}</strong>
-          <span>
-            {currentRole === 'superadministrador'
-              ? 'Permisos Superadmin'
-              : currentRole === 'administrador'
-              ? 'Permisos de Administrador'
-              : 'Vista de Residente'}
-          </span>
+          <span>{currentRoleLabel}</span>
         </div>
       </section>
 
@@ -252,7 +252,7 @@ function AppContent() {
       {activeModule === 'normas' && (
         <ErrorBoundary>
           <Suspense fallback={<ModuleLoader />}>
-            {currentRole === 'administrador' || currentRole === 'superadministrador' ? (
+            {isAdmin ? (
               <NormsModule />
             ) : (
               <NormasResidentModule />
@@ -264,7 +264,7 @@ function AppContent() {
       {activeModule === 'aseos' && (
         <ErrorBoundary>
           <Suspense fallback={<ModuleLoader />}>
-            {currentRole === 'administrador' || currentRole === 'superadministrador' ? (
+            {isAdmin ? (
               <div className="cleaning-module-container" style={{ display: 'grid', gap: '20px' }}>
                 <div
                   style={{
@@ -379,7 +379,7 @@ function AppContent() {
             </button>
           ))}
 
-          {currentRole === 'administrador' || currentRole === 'superadministrador' ? (
+          {isAdmin ? (
             <>
               <p className="nav-label" style={{ marginTop: '16px' }}>Administración</p>
               <NavLink
@@ -473,8 +473,8 @@ function AppContent() {
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
                 <span>Simulación Local</span>
                 <select
-                  value={currentRole}
-                  onChange={(e) => setCurrentRole(e.target.value as any)}
+                  value={localMockRole}
+                  onChange={(e) => setLocalMockRole(e.target.value as any)}
                   aria-label="Cambiar rol de prueba"
                   style={{
                     marginLeft: '4px',
@@ -506,14 +506,32 @@ function AppContent() {
 
             {!isLocalMode && user && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span className="text-sm text-gray-600">{profile?.display_name || user.email}</span>
-                <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  className="p-2 rounded-lg text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                  aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+                >
+                  {theme === 'dark' ? (
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                  )}
+                </button>
+                <NavLink
+                  to="/perfil"
+                  className="px-3 py-1.5 text-sm font-medium text-primary hover:text-primary/80 border border-primary/20 rounded-lg transition-colors"
+                >
+                  Mi cuenta
+                </NavLink>
+                <span className="text-sm text-gray-600 dark:text-gray-400">{profile?.display_name || user.email}</span>
+                <span className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded">
                   {profile?.profile_roles?.[0]?.role || 'usuario'}
                 </span>
                 <button
                   type="button"
                   onClick={signOut}
-                  className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 border border-gray-200 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors"
                 >
                   Cerrar sesión
                 </button>
@@ -525,7 +543,14 @@ function AppContent() {
 <div className="page-content">
             <Routes>
               <Route path="/signin" element={<SignInPage />} />
-              <Route path="/admin/*" element={<AdminLayout />}>
+              <Route
+                path="/admin/*"
+                element={
+                  <AdminGuard>
+                    <AdminLayout />
+                  </AdminGuard>
+                }
+              >
                 <Route index element={<Navigate to="/admin/incumplissements" replace />} />
                 <Route path="incumplissements" element={<AdminViolationsModule />} />
                 <Route path="incumplissements/:id" element={<AdminViolationsModule />} />
@@ -538,6 +563,15 @@ function AppContent() {
                 <Route path="personas" element={<AdminPersonasModule />} />
                 <Route path="auditoria" element={<AdminAuditoriaModule />} />
               </Route>
+
+              <Route
+                path="/perfil"
+                element={
+                  <AuthGuard>
+                    <ProfilePage />
+                  </AuthGuard>
+                }
+              />
 
               <Route path="*" element={<MainAppContent />} />
             </Routes>

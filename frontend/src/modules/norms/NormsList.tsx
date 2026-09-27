@@ -305,7 +305,7 @@ export function NormsList() {
     const currentVersion = versions[0]
 
     if (versions.length === 0) {
-      return <p className="text-gray-500 text-sm py-4 text-center">Sin versiones registradas</p>
+      return <p className="text-neutral-500 dark:text-neutral-400 text-sm py-4 text-center">Sin versiones registradas</p>
     }
 
     return (
@@ -316,14 +316,14 @@ export function NormsList() {
             <div
               key={version.id}
               className={`border rounded-lg p-4 transition-colors ${
-                isCurrent ? 'bg-green-50 border-green-200' : 'bg-white border-gray-100 hover:bg-gray-50'
+                isCurrent ? 'bg-success-50 dark:bg-success-900/20 border-success-200 dark:border-success-800' : 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
               }`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2 flex-wrap">
                     <span className={`font-mono text-sm px-2 py-1 rounded ${
-                      isCurrent ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                      isCurrent ? 'bg-success-100 dark:bg-success-900/30 text-success-700 dark:text-success-400' : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
                     }`}>
                       v{version.version_number}
                     </span>
@@ -331,27 +331,27 @@ export function NormsList() {
                     {version.source_document_id && (
                       <SourceBadge sourceType={version.source_document_id} sourceNote={version.source_note} />
                     )}
-                    {isCurrent && <span className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded font-medium">Actual</span>}
+                    {isCurrent && <span className="px-2 py-1 text-xs bg-success-100 dark:bg-success-900/30 text-success-700 dark:text-success-400 rounded font-medium">Actual</span>}
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-gray-500 mb-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs text-neutral-500 dark:text-neutral-400 mb-3">
                     <div><span className="font-medium">Creada:</span> {version.created_at ? formatDate(version.created_at.split('T')[0]) : '—'}</div>
                     <div><span className="font-medium">Válida desde:</span> {version.valid_from ? formatDate(version.valid_from) : '—'}</div>
                     <div><span className="font-medium">Válida hasta:</span> {version.valid_until ? formatDate(version.valid_until) : 'Indefinida'}</div>
                     <div><span className="font-medium">ID:</span> {version.id.slice(0, 8)}...</div>
                   </div>
 
-                  <p className="text-sm text-gray-700 line-clamp-3 font-mono bg-gray-50 p-3 rounded">{version.text_content}</p>
+                  <p className="text-sm text-neutral-700 dark:text-neutral-300 line-clamp-3 font-mono bg-neutral-100 dark:bg-neutral-800 p-3 rounded">{version.text_content}</p>
 
                   {(version.source_note || version.approval_note) && (
                     <div className="mt-3 space-y-2">
                       {version.source_note && (
-                        <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                        <div className="text-xs text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800 p-2 rounded">
                           <span className="font-medium">Fuente: </span>{version.source_note}
                         </div>
                       )}
                       {version.approval_note && (
-                        <div className="text-xs text-green-700 bg-green-50 p-2 rounded border border-green-200">
+                        <div className="text-xs text-success-700 dark:text-success-400 bg-success-50 dark:bg-success-900/20 p-2 rounded border border-success-200 dark:border-success-800">
                           <span className="font-medium">Aprobación: </span>{version.approval_note}
                         </div>
                       )}
@@ -373,8 +373,8 @@ export function NormsList() {
         header: 'Norma',
         render: (norm: any) => (
           <div>
-            <p className="font-medium text-gray-900">{norm.title}</p>
-            <p className="text-sm text-gray-500 line-clamp-1 mt-1">{norm.norm_versions?.[0]?.text_content || 'Sin contenido'}</p>
+            <p className="font-medium text-neutral-900 dark:text-neutral-100">{norm.title}</p>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-1 mt-1">{norm.norm_versions?.[0]?.text_content || 'Sin contenido'}</p>
           </div>
         ),
       },
@@ -388,10 +388,10 @@ export function NormsList() {
         header: 'Versión actual',
         render: (norm: any) => {
           const v = norm.norm_versions?.[0]
-          if (!v) return <span className="text-gray-400">Sin versiones</span>
+          if (!v) return <span className="text-neutral-400 dark:text-neutral-500">Sin versiones</span>
           return (
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">v{v.version_number}</span>
+              <span className="text-sm text-neutral-500 dark:text-neutral-400">v{v.version_number}</span>
               <NormStatusBadge status={v.status} />
             </div>
           )
@@ -399,30 +399,28 @@ export function NormsList() {
       },
       {
         key: 'source',
-        header: 'Fuente',
-        render: (norm: any) => {
-          const v = norm.norm_versions?.[0]
-          if (!v?.source_document_id) return <span className="text-gray-400">Sin fuente</span>
-          return <SourceBadge sourceType={v.source_document_id} sourceNote={v.source_note} />
-        },
+        header: 'Origen',
+        render: () => (
+          <span className="text-sm text-neutral-500 dark:text-neutral-400">Carta Interna</span>
+        ),
       },
       {
         key: 'validity',
         header: 'Vigencia',
         render: (norm: any) => {
           const v = norm.norm_versions?.[0]
-          if (!v) return <span className="text-gray-400">-</span>
+          if (!v) return <span className="text-neutral-400 dark:text-neutral-500">-</span>
           const parts = []
           if (v.valid_from) parts.push(`Desde: ${formatDate(v.valid_from)}`)
           if (v.valid_until) parts.push(`Hasta: ${formatDate(v.valid_until)}`)
-          return <span className="text-sm text-gray-500">{parts.join(' | ') || 'Indefinida'}</span>
+          return <span className="text-sm text-neutral-500 dark:text-neutral-400">{parts.join(' | ') || 'Indefinida'}</span>
         },
       },
       {
         key: 'versions_count',
         header: 'Versiones',
         render: (norm: any) => (
-          <span className="text-sm text-gray-500">{norm.norm_versions?.length || 0}</span>
+          <span className="text-sm text-neutral-500 dark:text-neutral-400">{norm.norm_versions?.length || 0}</span>
         ),
       },
       {
@@ -432,7 +430,6 @@ export function NormsList() {
           const items: DropdownItem[] = [
             { label: 'Ver detalle', onClick: () => handleOpenDetail(norm), icon: <EyeIcon /> },
             { label: 'Ver historial', onClick: () => {}, icon: <HistoryIcon /> },
-            { label: 'Ver fuente', onClick: () => {}, icon: <FileIcon /> },
           ]
           if (isAdmin) {
             items.push({ divider: true })
@@ -591,10 +588,6 @@ function EyeIcon() {
 
 function HistoryIcon() {
   return <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-}
-
-function FileIcon() {
-  return <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
 }
 
 function EditIcon() {

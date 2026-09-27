@@ -48,7 +48,7 @@ export function NormFilters({
   )
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 p-4 bg-white rounded-lg border border-gray-100">
+    <div className="flex flex-col sm:flex-row gap-4 p-4 bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-700">
       <div className="flex-1 min-w-[200px]">
         <Select
           label="Categoría"
@@ -80,22 +80,22 @@ export function NormFilters({
       </div>
 
       <div className="flex-1 min-w-[180px]">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Desde</label>
+        <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Desde</label>
         <input
           type="date"
           value={dateFrom}
           onChange={(e) => onDateFromChange(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+          className="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
         />
       </div>
 
       <div className="flex-1 min-w-[180px]">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Hasta</label>
+        <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Hasta</label>
         <input
           type="date"
           value={dateTo}
           onChange={(e) => onDateToChange(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+          className="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
         />
       </div>
 
@@ -132,7 +132,7 @@ export function SourceBadge({ sourceType, sourceNote }: { sourceType: string; so
   return (
     <Badge variant="outline" className="text-xs">
       {labels[sourceType] || sourceType}
-      {sourceNote && <span className="ml-1 text-gray-500">: {sourceNote}</span>}
+      {sourceNote && <span className="ml-1 text-neutral-500 dark:text-neutral-400">: {sourceNote}</span>}
     </Badge>
   )
 }

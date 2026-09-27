@@ -33,7 +33,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
   const addToast = (toast: Omit<Toast, 'id'>) => {
-    const id = Math.random().toString(36).substring(2, 9)
+    const id = crypto.randomUUID()
     const newToast = { ...toast, id }
     setToasts((prev) => [...prev, newToast])
 
@@ -105,10 +105,10 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
   }, [toast, onRemove])
 
   const types = {
-    success: 'bg-green-600',
-    error: 'bg-red-600',
-    warning: 'bg-yellow-600',
-    info: 'bg-blue-600',
+    success: 'bg-success-600',
+    error: 'bg-danger-600',
+    warning: 'bg-warning-600',
+    info: 'bg-primary-600',
   }
 
   const icons = {

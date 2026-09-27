@@ -120,3 +120,23 @@ export async function getCurrentUserRoles() {
   if (!user) return []
   return getProfileRoles(user.id)
 }
+
+export async function changePassword(currentPassword: string, newPassword: string) {
+  if (!supabase) throw new Error('Supabase no configurado')
+
+  // Primero verificamos la contraseña actual intentando hacer login
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
+  if (userError || !user) throw new Error('Usuario no autenticado')
+
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email: user.email!,
+    password: currentPassword,
+  })
+  if (signInError) throw new Error('La contraseña actual es incorrecta')
+
+  // Si la contraseña actual es correcta, actualizamos a la nueva
+  const { error: updateError } = await supabase.auth.updateUser({
+    password: newPassword,
+  })
+  if (updateError) throw new Error(updateError.message)
+}

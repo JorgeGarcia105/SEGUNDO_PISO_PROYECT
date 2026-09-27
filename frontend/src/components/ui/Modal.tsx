@@ -52,7 +52,7 @@ export function Modal({
 
   const modalContent = (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex min-h-full items-center justify-center p-4">
+      <div className="flex min-h-full items-start justify-center p-4">
         <div
           className="fixed inset-0 bg-black/50 transition-opacity"
           onClick={closeOnOverlayClick ? onClose : undefined}
@@ -60,7 +60,7 @@ export function Modal({
         />
         <div
           className={cn(
-            'relative w-full bg-white rounded-lg shadow-xl transform transition-all',
+            'relative w-full bg-white dark:bg-neutral-900 rounded-lg shadow-xl transform transition-all',
             sizes[size],
             className
           )}
@@ -70,15 +70,15 @@ export function Modal({
           aria-describedby={description ? 'modal-description' : undefined}
         >
           {(title || showCloseButton) && (
-            <div className="flex items-start justify-between p-4 border-b border-gray-100">
+            <div className="flex items-start justify-between p-4 border-b border-neutral-200 dark:border-neutral-700">
               <div>
                 {title && (
-                  <h2 id="modal-title" className="text-lg font-semibold text-gray-900">
+                  <h2 id="modal-title" className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
                     {title}
                   </h2>
                 )}
                 {description && (
-                  <p id="modal-description" className="mt-1 text-sm text-gray-500">
+                  <p id="modal-description" className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                     {description}
                   </p>
                 )}
@@ -86,7 +86,7 @@ export function Modal({
               {showCloseButton && (
                 <button
                   type="button"
-                  className="text-gray-400 hover:text-gray-500 transition-colors"
+                  className="text-neutral-400 hover:text-neutral-500 dark:hover:text-neutral-300 transition-colors"
                   onClick={onClose}
                   aria-label="Cerrar"
                 >
@@ -97,7 +97,7 @@ export function Modal({
               )}
             </div>
           )}
-          <div className="p-4">{children}</div>
+          <div className="p-4 max-h-[calc(100vh-8rem)] overflow-y-auto">{children}</div>
         </div>
       </div>
     </div>
@@ -132,11 +132,11 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
-      <p className="text-gray-600 mb-6">{message}</p>
+      <p className="text-neutral-600 dark:text-neutral-400 mb-6">{message}</p>
       <div className="flex justify-end gap-3">
         <button
           type="button"
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          className="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500"
           onClick={onClose}
           disabled={loading}
         >
@@ -146,7 +146,7 @@ export function ConfirmDialog({
           type="button"
           className={cn(
             'px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2',
-            variant === 'danger' ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
+            variant === 'danger' ? 'bg-danger-600 hover:bg-danger-700 focus:ring-danger-500' : 'bg-primary-600 hover:bg-primary-700 focus:ring-primary-500'
           )}
           onClick={onConfirm}
           disabled={loading}

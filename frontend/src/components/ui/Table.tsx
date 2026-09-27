@@ -47,21 +47,21 @@ export function Table<T>({
         <table className="w-full" role="table">
           <thead>
             <tr>
-              {expandable && <th className={cn('px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider', 'w-10')} />}
+              {expandable && <th className={cn('px-4 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider', 'w-10')} />}
               {columns.map((col) => (
-                <th key={col.key} className={cn('px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider', col.className)} style={{ width: col.width }}>
+                <th key={col.key} className={cn('px-4 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider', col.className)} style={{ width: col.width }}>
                   {col.header}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-700">
             {Array.from({ length: 5 }).map((_, i) => (
-              <tr key={i} className={cn(hoverable && 'hover:bg-gray-50', striped && i % 2 === 0 && 'bg-gray-50')}>
+              <tr key={i} className={cn(hoverable && 'hover:bg-neutral-50 dark:hover:bg-neutral-800/50', striped && i % 2 === 0 && 'bg-neutral-50 dark:bg-neutral-800/50')}>
                 {expandable && <td className="px-4 py-3" />}
                 {columns.map((col) => (
-                  <td key={col.key} className={cn('px-4 py-3 text-sm text-gray-900', col.className)}>
-                    <div className="h-4 bg-gray-200 animate-pulse rounded w-3/4" />
+                  <td key={col.key} className={cn('px-4 py-3 text-sm text-neutral-900 dark:text-neutral-100', col.className)}>
+                    <div className="h-4 bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded w-3/4" />
                   </td>
                 ))}
               </tr>
@@ -75,7 +75,7 @@ export function Table<T>({
   if (data.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">{emptyMessage}</p>
+        <p className="text-neutral-500 dark:text-neutral-400">{emptyMessage}</p>
       </div>
     )
   }
@@ -85,15 +85,15 @@ export function Table<T>({
       <table className="w-full" role="table">
         <thead>
           <tr>
-            {expandable && <th className={cn('px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider', 'w-10')} />}
+            {expandable && <th className={cn('px-4 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider', 'w-10')} />}
             {columns.map((col) => (
-              <th key={col.key} className={cn('px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider', col.className)} style={{ width: col.width }}>
+              <th key={col.key} className={cn('px-4 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider', col.className)} style={{ width: col.width }}>
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-neutral-200 dark:divide-neutral-700">
           {data.map((row, rowIndex) => {
             const key = keyExtractor(row)
             const isExpanded = expandedKeys.has(key)
@@ -101,8 +101,8 @@ export function Table<T>({
               <React.Fragment key={key}>
                 <tr
                   className={cn(
-                    hoverable && 'hover:bg-gray-50',
-                    striped && rowIndex % 2 === 0 && 'bg-gray-50',
+                    hoverable && 'hover:bg-neutral-50 dark:hover:bg-neutral-800/50',
+                    striped && rowIndex % 2 === 0 && 'bg-neutral-50 dark:bg-neutral-800/50',
                     onRowClick && 'cursor-pointer',
                     expandable && 'cursor-pointer'
                   )}
@@ -118,7 +118,7 @@ export function Table<T>({
                     <td className="px-4 py-3 text-center">
                       <button
                         type="button"
-                        className="p-1 rounded hover:bg-gray-100 transition-colors"
+                        className="p-1 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
                         onClick={(e) => {
                           e.stopPropagation()
                           onExpandChange?.(key, !isExpanded)
@@ -131,7 +131,7 @@ export function Table<T>({
                     </td>
                   )}
                   {columns.map((col) => (
-                    <td key={col.key} className={cn('px-4 py-3 text-sm text-gray-900', col.className)}>
+                    <td key={col.key} className={cn('px-4 py-3 text-sm text-neutral-900 dark:text-neutral-100', col.className)}>
                       {col.render ? col.render(row, rowIndex) : String((row as any)[col.key] ?? '')}
                     </td>
                   ))}
@@ -139,7 +139,7 @@ export function Table<T>({
                 {expandable && renderExpand && isExpanded && (
                   <tr>
                     <td colSpan={columns.length + 1} className="px-0 py-0">
-                      <div className="bg-gray-50 border-t border-gray-100 px-4 py-4 animate-in fade-in slide-in-from-top-2 duration-150">
+                      <div className="bg-neutral-50 dark:bg-neutral-800/50 border-t border-neutral-200 dark:border-neutral-700 px-4 py-4 animate-in fade-in slide-in-from-top-2 duration-150">
                         {renderExpand(row)}
                       </div>
                     </td>

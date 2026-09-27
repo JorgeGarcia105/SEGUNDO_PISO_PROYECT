@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@hooks/useAuth'
 import { Sidebar } from '@components/layout/Sidebar'
 
@@ -25,6 +25,7 @@ const adminNavigation: AdminNavItem[] = [
 export function AdminLayout() {
   const { profile, isLocalMode } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const isAdmin = profile?.profile_roles?.some((r) => r.role === 'administrador' || r.role === 'superadministrador')
@@ -51,7 +52,10 @@ export function AdminLayout() {
           key: item.key,
           label: item.label,
           short: item.short,
-          onClick: () => {},
+          onClick: () => {
+            navigate(item.path)
+            setSidebarOpen(false)
+          },
           active: currentPath.startsWith(item.path),
         }))}
         activeKey={adminNavigation.find((item) => currentPath.startsWith(item.path))?.key || 'incumplimientos'}

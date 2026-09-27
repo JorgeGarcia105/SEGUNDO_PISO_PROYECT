@@ -10,12 +10,12 @@ export interface BadgeProps {
 
 export function Badge({ children, className, variant = 'default', size = 'md', dot }: BadgeProps) {
   const variants = {
-    default: 'bg-gray-100 text-gray-800',
-    success: 'bg-green-100 text-green-800',
-    warning: 'bg-yellow-100 text-yellow-800',
-    danger: 'bg-red-100 text-red-800',
-    info: 'bg-blue-100 text-blue-800',
-    outline: 'border border-gray-300 bg-transparent text-gray-700',
+    default: 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-100',
+    success: 'bg-success-100 text-success-800 dark:bg-success-900/40 dark:text-success-300',
+    warning: 'bg-warning-100 text-warning-800 dark:bg-warning-900/40 dark:text-warning-300',
+    danger: 'bg-danger-100 text-danger-800 dark:bg-danger-900/40 dark:text-danger-300',
+    info: 'bg-info-100 text-info-800 dark:bg-info-900/40 dark:text-info-300',
+    outline: 'border border-neutral-300 dark:border-neutral-600 bg-transparent text-neutral-800 dark:text-neutral-200',
   }
   const sizes = {
     sm: 'px-2 py-0.5 text-xs',
@@ -24,7 +24,7 @@ export function Badge({ children, className, variant = 'default', size = 'md', d
 
   return (
     <span className={cn('inline-flex items-center font-medium rounded-full', variants[variant], sizes[size], className)}>
-      {dot && <span className={cn('mr-1.5 h-1.5 w-1.5 rounded-full', variant === 'success' && 'bg-green-500', variant === 'warning' && 'bg-yellow-500', variant === 'danger' && 'bg-red-500', variant === 'info' && 'bg-blue-500', variant === 'default' && 'bg-gray-500')} />}
+      {dot && <span className={cn('mr-1.5 h-1.5 w-1.5 rounded-full', variant === 'success' && 'bg-success-500', variant === 'warning' && 'bg-warning-500', variant === 'danger' && 'bg-danger-500', variant === 'info' && 'bg-info-500', variant === 'default' && 'bg-neutral-500')} />}
       {children}
     </span>
   )
