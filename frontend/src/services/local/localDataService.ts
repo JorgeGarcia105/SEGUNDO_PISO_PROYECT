@@ -129,6 +129,83 @@ export async function localGetNormChangesWithRelations(_normId?: string) {
   return []
 }
 
+export async function localCreateNorm(norm: { category_id?: string | null; title: string; article_number?: string | null; chapter?: string | null; is_provisional?: boolean; drive_url?: string | null; created_by?: string | null }): Promise<Norm> {
+  const newNorm: Norm = {
+    id: crypto.randomUUID(),
+    category_id: norm.category_id || null,
+    title: norm.title,
+    article_number: norm.article_number || null,
+    chapter: norm.chapter || null,
+    is_provisional: norm.is_provisional || false,
+    drive_url: norm.drive_url || null,
+    created_by: norm.created_by || null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }
+  normStore.create(newNorm)
+  return newNorm
+}
+
+export async function localUpdateNorm(id: string, norm: Partial<Norm>): Promise<Norm | null> {
+  const existing = normStore.getById(id)
+  if (!existing) return null
+  const updated = normStore.update(id, { ...norm, updated_at: new Date().toISOString() })
+  return updated || null
+}
+
+export async function localDeleteNorm(id: string): Promise<void> {
+  normStore.delete(id)
+}
+
+export async function localCreateNormCategory(category: { name: string; description?: string | null; created_by?: string | null }): Promise<NormCategory> {
+  const newCategory: NormCategory = {
+    id: crypto.randomUUID(),
+    name: category.name,
+    description: category.description || null,
+    created_by: category.created_by || null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }
+  normCategoryStore.create(newCategory)
+  return newCategory
+}
+
+export async function localUpdateNormCategory(id: string, category: Partial<NormCategory>): Promise<NormCategory | null> {
+  const existing = normCategoryStore.getById(id)
+  if (!existing) return null
+  const updated = normCategoryStore.update(id, { ...category, updated_at: new Date().toISOString() })
+  return updated || null
+}
+
+export async function localCreateNormVersion(version: { norm_id: string; version_number: number; version_label?: string | null; text_content: string; status?: string; valid_from?: string | null; valid_until?: string | null; source_document_id?: string | null; source_note?: string | null; approval_note?: string | null; ratification_date?: string | null; ratified_by?: string | null; created_by?: string | null }): Promise<NormVersion> {
+  const newVersion: NormVersion = {
+    id: crypto.randomUUID(),
+    norm_id: version.norm_id,
+    version_number: version.version_number,
+    version_label: version.version_label || null,
+    text_content: version.text_content,
+    status: (version.status as any) || 'PENDIENTE_CONFIRMACION',
+    valid_from: version.valid_from || null,
+    valid_until: version.valid_until || null,
+    source_document_id: version.source_document_id || null,
+    source_note: version.source_note || null,
+    approval_note: version.approval_note || null,
+    ratification_date: version.ratification_date || null,
+    ratified_by: version.ratified_by || null,
+    created_by: version.created_by || null,
+    created_at: new Date().toISOString(),
+  }
+  normVersionStore.create(newVersion)
+  return newVersion
+}
+
+export async function localUpdateNormVersion(id: string, version: Partial<NormVersion>): Promise<NormVersion | null> {
+  const existing = normVersionStore.getById(id)
+  if (!existing) return null
+  const updated = normVersionStore.update(id, version)
+  return updated || null
+}
+
 // --- Métodos de Aseos ---
 export async function localGetCleaningZones(): Promise<CleaningZone[]> {
   return cleaningZoneStore.getAll()
