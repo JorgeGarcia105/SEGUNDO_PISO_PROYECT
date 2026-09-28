@@ -60,7 +60,7 @@ export function Modal({
         />
         <div
           className={cn(
-            'relative w-full bg-white dark:bg-neutral-900 rounded-lg shadow-xl transform transition-all',
+            'relative w-full bg-white rounded-lg shadow-xl transform transition-all',
             sizes[size],
             className
           )}
@@ -70,15 +70,15 @@ export function Modal({
           aria-describedby={description ? 'modal-description' : undefined}
         >
           {(title || showCloseButton) && (
-            <div className="flex items-start justify-between p-4 border-b border-neutral-200 dark:border-neutral-700">
+            <div className="flex items-start justify-between p-4 border-b border-neutral-200">
               <div>
                 {title && (
-                  <h2 id="modal-title" className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+                  <h2 id="modal-title" className="text-lg font-semibold text-neutral-900">
                     {title}
                   </h2>
                 )}
                 {description && (
-                  <p id="modal-description" className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                  <p id="modal-description" className="mt-1 text-sm text-neutral-500">
                     {description}
                   </p>
                 )}
@@ -86,7 +86,7 @@ export function Modal({
               {showCloseButton && (
                 <button
                   type="button"
-                  className="text-neutral-400 hover:text-neutral-500 dark:hover:text-neutral-300 transition-colors"
+                  className="text-neutral-400 hover:text-neutral-500 transition-colors"
                   onClick={onClose}
                   aria-label="Cerrar"
                 >
@@ -132,11 +132,11 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
-      <p className="text-neutral-600 dark:text-neutral-400 mb-6">{message}</p>
+      <p className="text-neutral-600 mb-6">{message}</p>
       <div className="flex justify-end gap-3">
         <button
           type="button"
-          className="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+          className="px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-500"
           onClick={onClose}
           disabled={loading}
         >

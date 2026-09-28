@@ -10,12 +10,12 @@ export interface BadgeProps {
 
 export function Badge({ children, className, variant = 'default', size = 'md', dot }: BadgeProps) {
   const variants = {
-    default: 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-100',
-    success: 'bg-success-100 text-success-800 dark:bg-success-900/40 dark:text-success-300',
-    warning: 'bg-warning-100 text-warning-800 dark:bg-warning-900/40 dark:text-warning-300',
-    danger: 'bg-danger-100 text-danger-800 dark:bg-danger-900/40 dark:text-danger-300',
-    info: 'bg-info-100 text-info-800 dark:bg-info-900/40 dark:text-info-300',
-    outline: 'border border-neutral-300 dark:border-neutral-600 bg-transparent text-neutral-800 dark:text-neutral-200',
+    default: 'bg-neutral-100 text-neutral-800',
+    success: 'bg-success-100 text-success-800',
+    warning: 'bg-warning-100 text-warning-800',
+    danger: 'bg-danger-100 text-danger-800',
+    info: 'bg-info-100 text-info-800',
+    outline: 'border border-neutral-300 bg-transparent text-neutral-800',
   }
   const sizes = {
     sm: 'px-2 py-0.5 text-xs',

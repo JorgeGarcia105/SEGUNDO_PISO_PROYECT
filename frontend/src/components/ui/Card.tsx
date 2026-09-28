@@ -9,9 +9,9 @@ export interface CardProps {
 
 export function Card({ children, className, variant = 'default', padding = 'md' }: CardProps) {
   const variants = {
-    default: 'bg-white dark:bg-neutral-900 shadow-sm',
-    outlined: 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700',
-    elevated: 'bg-white dark:bg-neutral-900 shadow-md',
+    default: 'bg-white shadow-sm',
+    outlined: 'bg-white border border-neutral-200',
+    elevated: 'bg-white shadow-md',
   }
   const paddings = {
     none: '',
@@ -42,7 +42,7 @@ export interface CardTitleProps {
 }
 
 export function CardTitle({ children, className }: CardTitleProps) {
-  return <h3 className={cn('text-lg font-semibold text-neutral-900 dark:text-neutral-100', className)}>{children}</h3>
+  return <h3 className={cn('text-lg font-semibold text-neutral-900', className)}>{children}</h3>
 }
 
 export interface CardDescriptionProps {
@@ -51,7 +51,7 @@ export interface CardDescriptionProps {
 }
 
 export function CardDescription({ children, className }: CardDescriptionProps) {
-  return <p className={cn('mt-1 text-sm text-neutral-500 dark:text-neutral-400', className)}>{children}</p>
+  return <p className={cn('mt-1 text-sm text-neutral-500', className)}>{children}</p>
 }
 
 export interface CardContentProps {
@@ -69,5 +69,5 @@ export interface CardFooterProps {
 }
 
 export function CardFooter({ children, className }: CardFooterProps) {
-  return <div className={cn('mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700', className)}>{children}</div>
+  return <div className={cn('mt-4 pt-4 border-t border-neutral-200', className)}>{children}</div>
 }
