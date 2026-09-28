@@ -16,24 +16,25 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, label, error, helperText, options, placeholder, id, ...props }, ref) => {
+  ({ className, label, error, helperText, options, placeholder, id, disabled, ...props }, ref) => {
     const selectId = id || label?.toLowerCase().replace(/\s+/g, '-')
 
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={selectId} className="block text-sm font-medium text-neutral-800 dark:text-neutral-200 mb-1">
+          <label htmlFor={selectId} className="block text-sm font-medium text-neutral-900 mb-1">
             {label}
           </label>
         )}
         <select
           ref={ref}
           id={selectId}
+          disabled={disabled}
           className={cn(
             'flex h-10 w-full rounded-md border px-3 py-2 text-sm',
             'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-            'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-neutral-100 dark:disabled:bg-neutral-800',
-            'border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100',
+            'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-neutral-100',
+            'border-neutral-300 bg-white text-neutral-900',
             error && 'border-danger-500 focus:ring-danger-500',
             className
           )}
@@ -48,8 +49,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        {error && <p id={`${selectId}-error`} className="mt-1 text-sm text-danger-600 dark:text-danger-300" role="alert">{error}</p>}
-        {helperText && !error && <p id={`${selectId}-helper`} className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">{helperText}</p>}
+        {error && <p id={`${selectId}-error`} className="mt-1 text-sm text-danger-600" role="alert">{error}</p>}
+        {helperText && !error && <p id={`${selectId}-helper`} className="mt-1 text-sm text-neutral-600">{helperText}</p>}
       </div>
     )
   }

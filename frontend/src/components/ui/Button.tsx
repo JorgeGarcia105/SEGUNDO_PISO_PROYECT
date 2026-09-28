@@ -11,11 +11,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading, disabled, children, ...props }, ref) => {
     const base = 'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none rounded-lg'
     const variants = {
-      primary: 'bg-primary-600 text-white hover:bg-primary-700 focus-visible:ring-primary-500 dark:bg-primary-600 dark:hover:bg-primary-700',
-      secondary: 'bg-neutral-100 text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-500 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700',
-      outline: 'border border-neutral-300 bg-transparent hover:bg-neutral-50 focus-visible:ring-neutral-500 dark:border-neutral-600 dark:hover:bg-neutral-800',
-      ghost: 'bg-transparent hover:bg-neutral-100 focus-visible:ring-neutral-500 dark:hover:bg-neutral-800',
-      danger: 'bg-danger-600 text-white hover:bg-danger-700 focus-visible:ring-danger-500 dark:bg-danger-600 dark:hover:bg-danger-700',
+      primary: 'bg-primary-600 text-white hover:bg-primary-700 focus-visible:ring-primary-500',
+      secondary: 'bg-neutral-100 text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-500',
+      outline: 'border border-neutral-300 bg-transparent hover:bg-neutral-50 focus-visible:ring-neutral-500',
+      ghost: 'bg-transparent hover:bg-neutral-100 focus-visible:ring-neutral-500',
+      danger: 'bg-danger-600 text-white hover:bg-danger-700 focus-visible:ring-danger-500',
     }
     const sizes = {
       sm: 'h-8 px-3 text-sm rounded-md',

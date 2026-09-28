@@ -25,11 +25,11 @@ export function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-50">
       <Card className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">SegundoPiso</h1>
-          <p className="text-gray-500 mt-1">Acceso para administradores</p>
+          <h1 className="text-2xl font-bold text-neutral-900">SegundoPiso</h1>
+          <p className="text-neutral-500 mt-1">Acceso para administradores</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -66,8 +66,8 @@ export function SignInPage() {
           </Button>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="mt-6 pt-6 border-t border-neutral-100 text-center">
+          <p className="text-sm text-neutral-500">
             ¿No tienes cuenta? El acceso es solo por invitación.
           </p>
           <Link to="/" className="text-sm text-primary hover:underline mt-2 block">

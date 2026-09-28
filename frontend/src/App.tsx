@@ -10,7 +10,6 @@ import { AdminLayout } from './modules/admin'
 import { SignInPage } from './modules/auth'
 import { AdminGuard, AuthGuard } from './components/auth'
 import { ProfilePage } from './modules/profile'
-import { useTheme } from './design-system'
 import './App.css'
 
 const NormsModule = lazy(() => import('./modules/norms/NormsList').then((m) => ({ default: m.NormsList })))
@@ -97,7 +96,6 @@ const moduleCopy: Record<ModuleKey, { eyebrow: string; title: string; descriptio
 
 function AppContent() {
   const { isLocalMode, user, profile, signOut } = useAuth()
-  const { theme, toggleTheme } = useTheme()
   const [activeModule, setActiveModule] = useState<ModuleKey>('inicio')
   const [cleaningTab, setCleaningTab] = useState<CleaningTabKey>('assignments')
   const [menuOpen, setMenuOpen] = useState(false)
@@ -506,32 +504,20 @@ function AppContent() {
 
             {!isLocalMode && user && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  className="p-2 rounded-lg text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                  aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-                >
-                  {theme === 'dark' ? (
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                  ) : (
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                  )}
-                </button>
                 <NavLink
                   to="/perfil"
                   className="px-3 py-1.5 text-sm font-medium text-primary hover:text-primary/80 border border-primary/20 rounded-lg transition-colors"
                 >
                   Mi cuenta
                 </NavLink>
-                <span className="text-sm text-gray-600 dark:text-gray-400">{profile?.display_name || user.email}</span>
-                <span className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded">
+                <span className="text-sm text-neutral-600">{profile?.display_name || user.email}</span>
+                <span className="px-2 py-0.5 text-xs bg-neutral-100 text-neutral-600 rounded">
                   {profile?.profile_roles?.[0]?.role || 'usuario'}
                 </span>
                 <button
                   type="button"
                   onClick={signOut}
-                  className="px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 border border-neutral-200 rounded-lg transition-colors"
                 >
                   Cerrar sesión
                 </button>

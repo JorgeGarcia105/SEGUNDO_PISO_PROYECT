@@ -37,7 +37,7 @@ export function Topbar({
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex items-center gap-4 border-b border-gray-100 bg-white px-4 py-3',
+        'sticky top-0 z-30 flex items-center gap-4 border-b border-neutral-200 bg-white px-4 py-3',
         'lg:px-6',
         className
       )}
@@ -55,13 +55,13 @@ export function Topbar({
 
       <div className="flex-1 min-w-0">
         {breadcrumb && (
-          <nav className="flex items-center gap-1 text-sm text-gray-500 mb-1" aria-label="Ruta de navegación">
+          <nav className="flex items-center gap-1 text-sm text-neutral-500 mb-1" aria-label="Ruta de navegación">
             {breadcrumb}
           </nav>
         )}
         <div>
-          <h1 className="truncate text-lg font-semibold text-gray-900">{title}</h1>
-          {subtitle && <p className="truncate text-sm text-gray-500">{subtitle}</p>}
+          <h1 className="truncate text-lg font-semibold text-neutral-900">{title}</h1>
+          {subtitle && <p className="truncate text-sm text-neutral-500">{subtitle}</p>}
         </div>
       </div>
 
@@ -70,14 +70,14 @@ export function Topbar({
           trigger={
             <button
               type="button"
-              className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-gray-100 transition-colors"
+              className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-neutral-100 transition-colors"
               aria-label="Menú de usuario"
               aria-expanded={false}
             >
               <Avatar name={user.name} src={user.avatar} size="sm" />
               <div className="hidden sm:block text-left">
-                <p className="text-sm font-medium text-gray-900 truncate max-w-[150px]">{user.name}</p>
-                <p className="text-xs text-gray-500 truncate max-w-[150px]">{user.email}</p>
+                <p className="text-sm font-medium text-neutral-900 truncate max-w-[150px]">{user.name}</p>
+                <p className="text-xs text-neutral-500 truncate max-w-[150px]">{user.email}</p>
               </div>
             </button>
           }
